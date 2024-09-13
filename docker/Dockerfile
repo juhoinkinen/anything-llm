@@ -173,6 +173,11 @@ ENV ANYTHING_LLM_RUNTIME=docker
 HEALTHCHECK --interval=1m --timeout=10s --start-period=1m \
   CMD /bin/bash /usr/local/bin/docker-healthcheck.sh || exit 1
 
+USER root
+RUN chgrp -R root /app && \
+    chmod -R g+rwX /usr/local/bin/docker* /app
+USER anythingllm
+
 # Run the server
 # CMD ["sh", "-c", "tail -f /dev/null"] # For development: keep container open
 ENTRYPOINT ["/bin/bash", "/usr/local/bin/docker-entrypoint.sh"]
